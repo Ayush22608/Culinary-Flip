@@ -56,39 +56,68 @@ function App() {
   const [computerTurnStage, setComputerTurnStage] = useState(0);
   const [computerSelectedCards, setComputerSelectedCards] = useState([]);
   const [computerThinking, setComputerThinking] = useState(false);
+  const [musicStarted, setMusicStarted] = useState(false);
   
   // Audio references
   const bgMusicRef = useRef(new Audio(backgroundMusic));
   const cardFlipRef = useRef(new Audio(cardFlipSound));
   const [isMuted, setIsMuted] = useState(false);
 
-  // Play background music
+  // Function to start background music
+  const startBackgroundMusic = () => {
+    if (!musicStarted && !isMuted) {
+      const audio = bgMusicRef.current;
+      audio.loop = true;
+      audio.play()
+        .then(() => {
+          setMusicStarted(true);
+          console.log("Music started successfully");
+        })
+        .catch(err => console.log("Audio playback error:", err));
+    }
+  };
+
+  // Handle document-wide click to start music
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      startBackgroundMusic();
+      document.removeEventListener('click', handleFirstInteraction);
+    };
+    
+    document.addEventListener('click', handleFirstInteraction);
+    
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction);
+    };
+  }, []);
+
+  // Handle background music control
   useEffect(() => {
     const audio = bgMusicRef.current;
     audio.loop = true;
     
-    // Start playing when game starts
-    const playMusic = () => {
-      if (!isMuted) {
+    if (musicStarted) {
+      if (isMuted) {
+        audio.pause();
+      } else {
         audio.play().catch(err => console.log("Audio playback error:", err));
       }
-    };
-    
-    // Try to play on component mount
-    playMusic();
+    }
     
     // Clean up
     return () => {
       audio.pause();
       audio.currentTime = 0;
     };
-  }, [isMuted]);
+  }, [isMuted, musicStarted]);
 
   // Toggle mute function for all audio
   const toggleMute = () => {
     const audio = bgMusicRef.current;
     if (isMuted) {
-      audio.play().catch(err => console.log("Audio playback error:", err));
+      if (musicStarted) {
+        audio.play().catch(err => console.log("Audio playback error:", err));
+      }
     } else {
       audio.pause();
     }
@@ -98,6 +127,7 @@ function App() {
   // Play card flip sound
   const playCardFlipSound = () => {
     if (!isMuted) {
+      startBackgroundMusic(); // Attempt to start music on any interaction
       const flipSound = cardFlipRef.current;
       flipSound.currentTime = 0; // Reset to start
       flipSound.play().catch(err => console.log("Card flip sound error:", err));
@@ -146,6 +176,9 @@ function App() {
 
   // Player logic unchanged
   const handleCardClick = (i) => {
+    // Start music on any card click (user interaction)
+    startBackgroundMusic();
+    
     if (!isPlayerTurn || flipped.has(i) || matched.has(i)) return;
 
     const next = new Set(flipped).add(i);
@@ -327,15 +360,18 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 overflow-hidden flex flex-col">
+    <div 
+      className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 overflow-hidden flex flex-col"
+      onClick={startBackgroundMusic} // Try to start music on any click
+    >
       {/* Navbar */}
       <nav className="bg-blue-950/30 backdrop-blur-sm border-b border-blue-600/20 h-16">
         <div className="h-full px-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-white">Culinary Flip</h1>
           <div className="flex items-center gap-4">
             {!gameOver && (
-              <span className="text-white bg-blue-800/40 px-4 py-1.5 rounded-full text-sm font-medium">
-                {isPlayerTurn ? 'Your Turn' : "Computer's Turn"}
+              <span className={`text-white ${isPlayerTurn ? 'bg-green-600' : 'bg-orange-500'} px-5 py-2 rounded-full text-md font-bold shadow-lg transition-colors duration-300 animate-pulse`}>
+                {isPlayerTurn ? '👤 Your Turn' : '💻 Computer\'s Turn'}
               </span>
             )}
             <button
@@ -454,12 +490,18 @@ function App() {
                 <span className="font-medium">Scoreboard</span>
               </div>
               <div className="space-y-3">
-                <div className="flex justify-between items-center bg-blue-800/20 p-3 rounded-lg">
-                  <span>Player</span>
+                <div className={`flex justify-between items-center ${isPlayerTurn ? 'bg-green-700/40 border-l-4 border-green-500' : 'bg-blue-800/20'} p-3 rounded-lg transition-all duration-300`}>
+                  <span className="flex items-center gap-2">
+                    {isPlayerTurn && <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>}
+                    Player
+                  </span>
                   <span className="font-mono text-blue-300 text-lg">{playerScore}</span>
                 </div>
-                <div className="flex justify-between items-center bg-blue-800/20 p-3 rounded-lg">
-                  <span>Computer</span>
+                <div className={`flex justify-between items-center ${!isPlayerTurn ? 'bg-orange-700/40 border-l-4 border-orange-500' : 'bg-blue-800/20'} p-3 rounded-lg transition-all duration-300`}>
+                  <span className="flex items-center gap-2">
+                    {!isPlayerTurn && <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>}
+                    Computer
+                  </span>
                   <span className="font-mono text-blue-300 text-lg">{computerScore}</span>
                 </div>
               </div>
@@ -467,7 +509,7 @@ function App() {
           </div>
 
           {/* Game Grid */}
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center relative">
             <div
               className={`grid gap-4 ${
                 gameMode === 'easy'
@@ -481,28 +523,32 @@ function App() {
                 <div
                   key={card.id}
                   onClick={() => handleCardClick(idx)}
-                  className={`w-full aspect-square rounded-xl transition-all duration-700 transform-gpu cursor-pointer hover:scale-105 ${
-                    flipped.has(idx) || matched.has(idx) ? '[transform:rotateY(180deg)]' : ''
-                  }`}
-                  style={{ 
-                    perspective: '1000px', 
-                    transformStyle: 'preserve-3d'
-                  }}
+                  className={`w-full aspect-square relative cursor-pointer hover:scale-105 ${isPlayerTurn ? 'hover:shadow-green-500/30 hover:shadow-lg' : ''}`}
                 >
-                  <div className="relative w-full h-full">
-                    {/* Front */}
+                  {/* Card container with flip effect */}
+                  <div 
+                    className="w-full h-full transition-transform duration-700 transform-gpu relative"
+                    style={{ 
+                      transformStyle: 'preserve-3d',
+                      transform: flipped.has(idx) || matched.has(idx) ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                    }}
+                  >
+                    {/* Front face */}
                     <div
-                      className={`absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-white-500 transition-opacity duration-700 shadow-lg ${
-                        flipped.has(idx) || matched.has(idx) ? 'opacity-0' : 'opacity-100'
-                      }`}
+                      className="absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-lg"
+                      style={{ backfaceVisibility: 'hidden' }}
                     />
-                    {/* Back */}
+                    
+                    {/* Back face */}
                     <div
-                      className={`absolute w-full h-full rounded-xl bg-cover bg-center transition-opacity duration-700 shadow-lg ${
-                        flipped.has(idx) || matched.has(idx) ? 'opacity-100' : 'opacity-0'
-                      }`}
-                      style={{ backgroundImage: `url(${card.img})` }}
-                    />
+                      className="absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-lg"
+                      style={{ 
+                        backfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg)'
+                      }}
+                    >
+                      <div className="w-full h-full bg-cover bg-center rounded-xl" style={{ backgroundImage: `url(${card.img})` }} />
+                    </div>
                   </div>
                 </div>
               ))}
