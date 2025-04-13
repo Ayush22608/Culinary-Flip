@@ -57,6 +57,7 @@ function App() {
   const [computerSelectedCards, setComputerSelectedCards] = useState([]);
   const [computerThinking, setComputerThinking] = useState(false);
   const [musicStarted, setMusicStarted] = useState(false);
+  const [isProcessingTurn, setIsProcessingTurn] = useState(false);
   
   // Audio references
   const bgMusicRef = useRef(new Audio(backgroundMusic));
@@ -172,6 +173,7 @@ function App() {
     setTime(0);
     setGameOver(false);
     setMemory({});
+    setIsProcessingTurn(false);
   };
 
   // Player logic unchanged
@@ -179,7 +181,11 @@ function App() {
     // Start music on any card click (user interaction)
     startBackgroundMusic();
     
-    if (!isPlayerTurn || flipped.has(i) || matched.has(i)) return;
+    // Prevent clicking if processing turn, not player's turn, or card is already flipped/matched
+    if (isProcessingTurn || !isPlayerTurn || flipped.has(i) || matched.has(i)) return;
+
+    // If already have 2 cards flipped, prevent flipping a third
+    if (flipped.size >= 2) return;
 
     const next = new Set(flipped).add(i);
     setFlipped(next);
@@ -188,18 +194,28 @@ function App() {
     setTimeout(playCardFlipSound, 0);
 
     if (next.size === 2) {
+      // Block additional card flips while processing the turn
+      setIsProcessingTurn(true);
+      
       const [a, b] = Array.from(next);
       if (cards[a].name === cards[b].name) {
         // Player match
         setMatched(m => new Set(m).add(a).add(b));
         setPlayerScore(s => s + 1);
-        setFlipped(new Set());
+        
+        // Delay to show the matched cards before resetting
+        setTimeout(() => {
+          setFlipped(new Set());
+          setIsProcessingTurn(false);
+        }, 800);
+        
         // Player gets another turn
       } else {
         // wrong → hand off
         setTimeout(() => {
           setFlipped(new Set());
           setIsPlayerTurn(false);
+          setIsProcessingTurn(false);
           setTimeout(computerTurn, 800);
         }, 800);
       }
