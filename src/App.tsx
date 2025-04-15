@@ -381,13 +381,13 @@ function App() {
       onClick={startBackgroundMusic} // Try to start music on any click
     >
       {/* Navbar */}
-      <nav className="bg-blue-950/30 backdrop-blur-sm border-b border-blue-600/20 h-16">
-        <div className="h-full px-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-white">Culinary Flip</h1>
-          <div className="flex items-center gap-4">
+      <nav className="bg-blue-950/30 backdrop-blur-sm border-b border-blue-600/20 h-12 sm:h-16">
+        <div className="h-full px-3 sm:px-6 flex items-center justify-between">
+          <h1 className="text-xl sm:text-2xl font-bold text-white truncate">Culinary Flip</h1>
+          <div className="flex items-center gap-2 sm:gap-4">
             {!gameOver && (
-              <span className={`text-white ${isPlayerTurn ? 'bg-green-600' : 'bg-orange-500'} px-5 py-2 rounded-full text-md font-bold shadow-lg transition-colors duration-300 animate-pulse`}>
-                {isPlayerTurn ? '👤 Your Turn' : '💻 Computer\'s Turn'}
+              <span className={`text-white ${isPlayerTurn ? 'bg-green-600' : 'bg-orange-500'} px-2 sm:px-5 py-1 sm:py-2 rounded-full text-sm sm:text-md font-bold shadow-lg transition-colors duration-300 animate-pulse`}>
+                {isPlayerTurn ? '👤 Your Turn' : '💻 Computer'}
               </span>
             )}
             <button
@@ -395,7 +395,7 @@ function App() {
               className="text-white hover:text-blue-300 transition-colors"
               title={isMuted ? "Unmute" : "Mute"}
             >
-              {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+              {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </button>
           </div>
         </div>
@@ -427,151 +427,361 @@ function App() {
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex gap-6 p-6">
-          <div className="w-72 space-y-4 flex flex-col">
-            {/* How to Play */}
-            <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
-              <button
-                className="w-full flex items-center justify-between"
-                onClick={() => setShowInstructions(!showInstructions)}
-              >
-                <div className="flex items-center gap-2">
-                  <HelpCircle size={20} className="text-blue-300" />
-                  <span className="font-medium">How to Play</span>
-                </div>
-                <ChevronDown
-                  className={`transform transition-transform ${showInstructions ? 'rotate-180' : ''}`}
-                />
-              </button>
-              {showInstructions && (
-                <ul className="mt-4 space-y-2 text-sm text-blue-100">
-                  <li>• Click on two cards to reveal them</li>
-                  <li>• Match identical food cards to score</li>
-                  <li>• Take turns with the computer</li>
-                  <li>• Most matches wins!</li>
-                </ul>
-              )}
-            </div>
-
-            {/* Game Mode */}
-            <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
-              <button
-                className="w-full flex items-center justify-between"
-                onClick={() => setShowModes(!showModes)}
-              >
-                <div className="flex items-center gap-2">
-                  <Settings size={20} className="text-blue-300" />
-                  <span className="font-medium">Game Mode</span>
-                </div>
-                <ChevronDown className={`transform transition-transform ${showModes ? 'rotate-180' : ''}`} />
-              </button>
-              {showModes && (
-                <div className="mt-4">
-                  <select
-                    value={gameMode}
-                    onChange={e => setGameMode(e.target.value)}
-                    className="w-full bg-blue-800/20 border border-blue-600/20 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                  </select>
-                </div>
-              )}
-            </div>
-
-            {/* Timer */}
-            <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
-              <button
-                className="w-full flex items-center justify-between"
-                onClick={() => setShowTime(!showTime)}
-              >
-                <div className="flex items-center gap-2">
-                  <Timer size={20} className="text-blue-300" />
-                  <span className="font-medium">Time</span>
-                </div>
-                <ChevronDown className={`transform transition-transform ${showTime ? 'rotate-180' : ''}`} />
-              </button>
-              {showTime && (
-                <div className="mt-4 text-center text-2xl font-mono text-blue-300">
-                  {formatTime(time)}
-                </div>
-              )}
-            </div>
-
-            {/* Scoreboard */}
-            <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white flex-1">
-              <div className="flex items-center gap-2 mb-4">
-                <Trophy size={20} className="text-blue-300" />
-                <span className="font-medium">Scoreboard</span>
-              </div>
-              <div className="space-y-3">
-                <div className={`flex justify-between items-center ${isPlayerTurn ? 'bg-green-700/40 border-l-4 border-green-500' : 'bg-blue-800/20'} p-3 rounded-lg transition-all duration-300`}>
-                  <span className="flex items-center gap-2">
-                    {isPlayerTurn && <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>}
-                    Player
-                  </span>
-                  <span className="font-mono text-blue-300 text-lg">{playerScore}</span>
-                </div>
-                <div className={`flex justify-between items-center ${!isPlayerTurn ? 'bg-orange-700/40 border-l-4 border-orange-500' : 'bg-blue-800/20'} p-3 rounded-lg transition-all duration-300`}>
-                  <span className="flex items-center gap-2">
-                    {!isPlayerTurn && <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>}
-                    Computer
-                  </span>
-                  <span className="font-mono text-blue-300 text-lg">{computerScore}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Game Grid */}
-          <div className="flex-1 flex items-center justify-center relative">
-            <div
-              className={`grid gap-4 ${
-                gameMode === 'easy'
-                  ? 'grid-cols-4 w-[600px]'
-                  : gameMode === 'medium'
-                  ? 'grid-cols-5 w-[750px]'
-                  : 'grid-cols-6 w-[900px]'
-              }`}
-            >
-              {cards.map((card, idx) => (
-                <div
-                  key={card.id}
-                  onClick={() => handleCardClick(idx)}
-                  className={`w-full aspect-square relative cursor-pointer hover:scale-105 ${isPlayerTurn ? 'hover:shadow-green-500/30 hover:shadow-lg' : ''}`}
+        <>
+          {/* Desktop and Portrait Layout */}
+          <div className="flex-1 flex md:flex-row flex-col gap-3 p-3 sm:gap-6 sm:p-6 landscape:md:flex landscape:hidden">
+            {/* Sidebar */}
+            <div className="md:w-72 md:space-y-4 flex md:flex-col md:block">
+              {/* Mobile Controls Bar */}
+              <div className="md:hidden flex gap-2 mb-2 w-full">
+                <button 
+                  onClick={() => setShowInstructions(!showInstructions)}
+                  className={`flex-1 flex justify-center items-center gap-1 bg-blue-950/30 backdrop-blur-sm rounded-lg p-2 text-white ${showInstructions ? 'bg-blue-800/50' : ''}`}
                 >
-                  {/* Card container with flip effect */}
-                  <div 
-                    className="w-full h-full transition-transform duration-700 transform-gpu relative"
-                    style={{ 
-                      transformStyle: 'preserve-3d',
-                      transform: flipped.has(idx) || matched.has(idx) ? 'rotateY(180deg)' : 'rotateY(0deg)'
-                    }}
+                  <HelpCircle size={16} />
+                  <span className="text-xs">Help</span>
+                </button>
+                <button 
+                  onClick={() => setShowModes(!showModes)}
+                  className={`flex-1 flex justify-center items-center gap-1 bg-blue-950/30 backdrop-blur-sm rounded-lg p-2 text-white ${showModes ? 'bg-blue-800/50' : ''}`}
+                >
+                  <Settings size={16} />
+                  <span className="text-xs">Mode</span>
+                </button>
+                <div className="flex-1 flex justify-center items-center gap-1 bg-blue-950/30 backdrop-blur-sm rounded-lg p-2 text-white">
+                  <Trophy size={16} />
+                  <span className="text-xs">{playerScore}-{computerScore}</span>
+                </div>
+                <button 
+                  onClick={() => setShowTime(!showTime)}
+                  className={`flex-1 flex justify-center items-center gap-1 bg-blue-950/30 backdrop-blur-sm rounded-lg p-2 text-white ${showTime ? 'bg-blue-800/50' : ''}`}
+                >
+                  <Timer size={16} />
+                  <span className="text-xs">{formatTime(time)}</span>
+                </button>
+              </div>
+              
+              {/* Mobile Panels - Only show the expanded one */}
+              {(showInstructions || showModes || showTime) && (
+                <div className="md:hidden bg-blue-950/30 backdrop-blur-sm rounded-xl p-3 mb-2 text-white">
+                  {showInstructions && (
+                    <div className="text-xs">
+                      <div className="font-medium mb-1">How to Play</div>
+                      <ul className="space-y-1 text-blue-100">
+                        <li>• Click on two cards to reveal them</li>
+                        <li>• Match identical food cards to score</li>
+                        <li>• Take turns with the computer</li>
+                        <li>• Most matches wins!</li>
+                      </ul>
+                    </div>
+                  )}
+                  {showModes && (
+                    <div>
+                      <div className="font-medium mb-1 text-xs">Game Mode</div>
+                      <select
+                        value={gameMode}
+                        onChange={e => setGameMode(e.target.value)}
+                        className="w-full text-xs bg-blue-800/20 border border-blue-600/20 rounded-lg p-1 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                      </select>
+                    </div>
+                  )}
+                  {showTime && (
+                    <div className="text-center">
+                      <div className="font-medium mb-1 text-xs">Time</div>
+                      <div className="text-xl font-mono text-blue-300">
+                        {formatTime(time)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Desktop Sidebar - visible on md+ screens */}
+              <div className="hidden md:block space-y-4 flex-1">
+                {/* How to Play */}
+                <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
+                  <button
+                    className="w-full flex items-center justify-between"
+                    onClick={() => setShowInstructions(!showInstructions)}
                   >
-                    {/* Front face */}
-                    <div
-                      className="absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-lg"
-                      style={{ backfaceVisibility: 'hidden' }}
+                    <div className="flex items-center gap-2">
+                      <HelpCircle size={20} className="text-blue-300" />
+                      <span className="font-medium">How to Play</span>
+                    </div>
+                    <ChevronDown
+                      className={`transform transition-transform ${showInstructions ? 'rotate-180' : ''}`}
                     />
-                    
-                    {/* Back face */}
-                    <div
-                      className="absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-lg"
-                      style={{ 
-                        backfaceVisibility: 'hidden',
-                        transform: 'rotateY(180deg)'
-                      }}
-                    >
-                      <div className="w-full h-full bg-cover bg-center rounded-xl" style={{ backgroundImage: `url(${card.img})` }} />
+                  </button>
+                  {showInstructions && (
+                    <ul className="mt-4 space-y-2 text-sm text-blue-100">
+                      <li>• Click on two cards to reveal them</li>
+                      <li>• Match identical food cards to score</li>
+                      <li>• Take turns with the computer</li>
+                      <li>• Most matches wins!</li>
+                    </ul>
+                  )}
+                </div>
+
+                {/* Game Mode */}
+                <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
+                  <button
+                    className="w-full flex items-center justify-between"
+                    onClick={() => setShowModes(!showModes)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Settings size={20} className="text-blue-300" />
+                      <span className="font-medium">Game Mode</span>
+                    </div>
+                    <ChevronDown className={`transform transition-transform ${showModes ? 'rotate-180' : ''}`} />
+                  </button>
+                  {showModes && (
+                    <div className="mt-4">
+                      <select
+                        value={gameMode}
+                        onChange={e => setGameMode(e.target.value)}
+                        className="w-full bg-blue-800/20 border border-blue-600/20 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+
+                {/* Timer */}
+                <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
+                  <button
+                    className="w-full flex items-center justify-between"
+                    onClick={() => setShowTime(!showTime)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Timer size={20} className="text-blue-300" />
+                      <span className="font-medium">Time</span>
+                    </div>
+                    <ChevronDown className={`transform transition-transform ${showTime ? 'rotate-180' : ''}`} />
+                  </button>
+                  {showTime && (
+                    <div className="mt-4 text-center text-2xl font-mono text-blue-300">
+                      {formatTime(time)}
+                    </div>
+                  )}
+                </div>
+
+                {/* Scoreboard */}
+                <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white flex-1">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Trophy size={20} className="text-blue-300" />
+                    <span className="font-medium">Scoreboard</span>
+                  </div>
+                  <div className="space-y-3">
+                    <div className={`flex justify-between items-center ${isPlayerTurn ? 'bg-green-700/40 border-l-4 border-green-500' : 'bg-blue-800/20'} p-3 rounded-lg transition-all duration-300`}>
+                      <span className="flex items-center gap-2">
+                        {isPlayerTurn && <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>}
+                        Player
+                      </span>
+                      <span className="font-mono text-blue-300 text-lg">{playerScore}</span>
+                    </div>
+                    <div className={`flex justify-between items-center ${!isPlayerTurn ? 'bg-orange-700/40 border-l-4 border-orange-500' : 'bg-blue-800/20'} p-3 rounded-lg transition-all duration-300`}>
+                      <span className="flex items-center gap-2">
+                        {!isPlayerTurn && <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>}
+                        Computer
+                      </span>
+                      <span className="font-mono text-blue-300 text-lg">{computerScore}</span>
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
+            </div>
+
+            {/* Game Grid - Desktop & Portrait */}
+            <div className="flex-1 flex items-center justify-center">
+              <div
+                className={`grid gap-2 sm:gap-4 ${
+                  gameMode === 'easy'
+                    ? 'grid-cols-4 w-full max-w-[600px]'
+                    : gameMode === 'medium'
+                    ? 'grid-cols-4 sm:grid-cols-5 w-full max-w-[750px]'
+                    : 'grid-cols-4 sm:grid-cols-6 w-full max-w-[900px]'
+                }`}
+              >
+                {cards.map((card, idx) => (
+                  <div
+                    key={card.id}
+                    onClick={() => handleCardClick(idx)}
+                    className={`w-full aspect-square relative cursor-pointer hover:scale-105 ${isPlayerTurn ? 'hover:shadow-green-500/30 hover:shadow-lg' : ''}`}
+                  >
+                    {/* Card container with flip effect */}
+                    <div 
+                      className="w-full h-full transition-transform duration-700 transform-gpu relative"
+                      style={{ 
+                        transformStyle: 'preserve-3d',
+                        transform: flipped.has(idx) || matched.has(idx) ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                      }}
+                    >
+                      {/* Front face */}
+                      <div
+                        className="absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-lg"
+                        style={{ backfaceVisibility: 'hidden' }}
+                      />
+                      
+                      {/* Back face */}
+                      <div
+                        className="absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-lg"
+                        style={{ 
+                          backfaceVisibility: 'hidden',
+                          transform: 'rotateY(180deg)'
+                        }}
+                      >
+                        <div className="w-full h-full bg-cover bg-center rounded-xl" style={{ backgroundImage: `url(${card.img})` }} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+
+          {/* Mobile Landscape Layout - Only visible in landscape on small devices */}
+          <div className="hidden landscape:flex landscape:md:hidden flex-row h-screen">
+            {/* Side Controls */}
+            <div className="w-36 h-full flex-shrink-0 border-r border-blue-600/20 bg-blue-950/40 flex flex-col justify-between py-2">
+              {/* Top area with logo and turn info */}
+              <div className="px-2">
+                <h1 className="text-md font-bold text-white text-center mb-2">Culinary Flip</h1>
+                <div className={`mb-2 text-white ${isPlayerTurn ? 'bg-green-600' : 'bg-orange-500'} px-2 py-1 rounded-lg text-xs font-bold text-center`}>
+                  {isPlayerTurn ? '👤 Your Turn' : '💻 Computer'}
+                </div>
+                
+                {/* Scores */}
+                <div className="bg-blue-800/30 rounded-lg p-2 mb-2">
+                  <div className="flex justify-between text-xs text-white">
+                    <span>Player:</span>
+                    <span className="font-bold">{playerScore}</span>
+                  </div>
+                  <div className="flex justify-between text-xs text-white">
+                    <span>Computer:</span>
+                    <span className="font-bold">{computerScore}</span>
+                  </div>
+                </div>
+
+                {/* Time */}
+                <div className="bg-blue-800/30 rounded-lg p-2 mb-2 text-center">
+                  <div className="text-xs text-white mb-1">Time</div>
+                  <div className="text-sm font-mono text-white">{formatTime(time)}</div>
+                </div>
+              </div>
+              
+              {/* Bottom area with controls */}
+              <div className="px-2">
+                <select
+                  value={gameMode}
+                  onChange={e => setGameMode(e.target.value)}
+                  className="w-full bg-blue-800/30 border border-blue-600/20 rounded-lg p-1 text-white text-xs mb-2"
+                >
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+                
+                <button onClick={toggleMute} className="w-full bg-blue-800/30 rounded-lg p-2 text-white flex justify-center mb-2">
+                  {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                </button>
+                
+                <button
+                  onClick={() => setShowInstructions(!showInstructions)}
+                  className="w-full bg-blue-800/30 rounded-lg p-2 text-white text-xs flex items-center justify-center"
+                >
+                  <HelpCircle size={14} className="mr-1" /> Help
+                </button>
+                
+                {/* Help Modal - Only shown when triggered */}
+                {showInstructions && (
+                  <div className="absolute bottom-2 left-2 right-2 bg-blue-950/90 backdrop-blur-sm rounded-lg p-3 text-white text-xs z-10">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-bold">How to Play</span>
+                      <button onClick={() => setShowInstructions(false)}>✕</button>
+                    </div>
+                    <ul className="space-y-1">
+                      <li>• Click on two cards to reveal them</li>
+                      <li>• Match identical food cards to score</li>
+                      <li>• Take turns with the computer</li>
+                      <li>• Most matches wins!</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Game Grid - Landscape Optimized */}
+            <div className="flex-1 flex items-center justify-center p-1 overflow-hidden">
+              <div
+                className={`grid max-h-full max-w-full ${
+                  gameMode === 'easy'
+                    ? 'grid-cols-4 gap-1'
+                    : gameMode === 'medium'
+                    ? 'grid-cols-5 gap-1'
+                    : 'grid-cols-6 gap-1'
+                }`}
+                style={{
+                  width: '100%',
+                  height: gameMode === 'easy' ? 'auto' : '100%'
+                }}
+              >
+                {cards.map((card, idx) => (
+                  <div
+                    key={card.id}
+                    onClick={() => handleCardClick(idx)}
+                    className="aspect-square relative cursor-pointer"
+                  >
+                    {/* Card container with flip effect */}
+                    <div 
+                      className="w-full h-full transition-transform duration-700 transform-gpu relative"
+                      style={{ 
+                        transformStyle: 'preserve-3d',
+                        transform: flipped.has(idx) || matched.has(idx) ? 'rotateY(180deg)' : 'rotateY(0deg)'
+                      }}
+                    >
+                      {/* Front face */}
+                      <div
+                        className="absolute w-full h-full rounded-sm bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-sm"
+                        style={{ backfaceVisibility: 'hidden' }}
+                      />
+                      
+                      {/* Back face */}
+                      <div
+                        className="absolute w-full h-full rounded-sm bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-sm"
+                        style={{ 
+                          backfaceVisibility: 'hidden',
+                          transform: 'rotateY(180deg)'
+                        }}
+                      >
+                        <div className="w-full h-full bg-cover bg-center rounded-sm" style={{ backgroundImage: `url(${card.img})` }} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
       )}
+      
+      {/* Viewport meta tag for proper mobile display */}
+      <style jsx>{`
+        @media (orientation: landscape) and (max-height: 500px) {
+          /* Only apply these styles on mobile devices in landscape */
+          html, body {
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+          }
+        }
+      `}</style>
     </div>
   );
 }
