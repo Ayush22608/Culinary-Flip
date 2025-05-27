@@ -377,50 +377,70 @@ function App() {
 
   return (
     <div 
-      className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 overflow-hidden flex flex-col"
-      onClick={startBackgroundMusic} // Try to start music on any click
+      className="min-h-screen bg-gradient-to-br from-[#112D4E] to-[#3F72AF] overflow-hidden flex flex-col"
+      onClick={startBackgroundMusic}
     >
       {/* Navbar */}
-      <nav className="bg-blue-950/30 backdrop-blur-sm border-b border-blue-600/20 h-12 sm:h-16">
-        <div className="h-full px-3 sm:px-6 flex items-center justify-between">
-          <h1 className="text-xl sm:text-2xl font-bold text-white truncate">Culinary Flip</h1>
+      <nav className="bg-[#112D4E]/80 backdrop-blur-md border-b border-[#DBE2EF]/20 h-16 sm:h-20 shadow-lg">
+        <div className="h-full px-4 sm:px-8 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <h1 className="text-xl sm:text-3xl font-bold text-[#F9F7F7] drop-shadow-lg">Culinary Flip</h1>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-[#3F72AF]/30 rounded-full border border-[#DBE2EF]/30 shadow-md">
+              <Trophy size={18} className="text-[#F9F7F7]" />
+              <span className="text-[#F9F7F7] font-medium">Memory Game</span>
+            </div>
+          </div>
           <div className="flex items-center gap-2 sm:gap-4">
             {!gameOver && (
-              <span className={`text-white ${isPlayerTurn ? 'bg-green-600' : 'bg-orange-500'} px-2 sm:px-5 py-1 sm:py-2 rounded-full text-sm sm:text-md font-bold shadow-lg transition-colors duration-300 animate-pulse`}>
-                {isPlayerTurn ? '👤 Your Turn' : '💻 Computer'}
-              </span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className={`px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg ${isPlayerTurn ? 'bg-[#3F72AF]' : 'bg-[#112D4E]'} text-[#F9F7F7] text-sm sm:text-base font-semibold shadow-lg transition-all duration-300 transform hover:scale-105`}>
+                  {isPlayerTurn ? '👤 Your Turn' : '💻 Computer'}
+                </div>
+                <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 bg-[#3F72AF]/30 rounded-full border border-[#DBE2EF]/30 shadow-md">
+                  <Timer size={16} className="text-[#F9F7F7] sm:w-[18px] sm:h-[18px]" />
+                  <span className="text-[#F9F7F7] font-mono text-sm sm:text-base">{formatTime(time)}</span>
+                </div>
+              </div>
             )}
             <button
               onClick={toggleMute}
-              className="text-white hover:text-blue-300 transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg bg-[#3F72AF]/30 border border-[#DBE2EF]/30 text-[#F9F7F7] hover:bg-[#3F72AF]/40 transition-all duration-300 transform hover:scale-105 shadow-md"
               title={isMuted ? "Unmute" : "Mute"}
             >
-              {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+              {isMuted ? <VolumeX size={18} className="sm:w-5 sm:h-5" /> : <Volume2 size={18} className="sm:w-5 sm:h-5" />}
             </button>
           </div>
         </div>
       </nav>
 
       {gameOver ? (
-        <div className="flex-1 flex items-center justify-center">
-          <div className="bg-blue-950/30 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full mx-4 text-white text-center">
-            <Trophy className="w-20 h-20 mx-auto mb-6 text-yellow-400" />
-            <h2 className="text-4xl font-bold mb-2">{getWinnerMessage()}</h2>
+        <div className="flex-1 flex items-center justify-center p-4">
+          <div className="bg-[#112D4E]/90 backdrop-blur-md rounded-2xl p-8 max-w-md w-full mx-4 text-[#F9F7F7] text-center border border-[#DBE2EF]/30 shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-[#3F72AF] flex items-center justify-center shadow-lg">
+              <Trophy className="w-12 h-12 text-[#F9F7F7]" />
+            </div>
+            <h2 className="text-4xl font-bold mb-4 text-[#F9F7F7] drop-shadow-lg">{getWinnerMessage()}</h2>
 
             <div className="space-y-4 mb-8">
-              <div className="flex justify-between items-center bg-blue-800/20 p-4 rounded-lg">
-                <span className="text-lg">Player Score</span>
-                <span className="text-2xl font-mono text-blue-300">{playerScore}</span>
+              <div className="flex justify-between items-center bg-[#3F72AF]/30 p-4 rounded-xl border border-[#DBE2EF]/30 shadow-md transform hover:scale-[1.02] transition-all duration-300">
+                <span className="text-lg flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#F9F7F7]"></span>
+                  Player Score
+                </span>
+                <span className="text-2xl font-mono text-[#F9F7F7]">{playerScore}</span>
               </div>
-              <div className="flex justify-between items-center bg-blue-800/20 p-4 rounded-lg">
-                <span className="text-lg">Computer Score</span>
-                <span className="text-2xl font-mono text-blue-300">{computerScore}</span>
+              <div className="flex justify-between items-center bg-[#3F72AF]/30 p-4 rounded-xl border border-[#DBE2EF]/30 shadow-md transform hover:scale-[1.02] transition-all duration-300">
+                <span className="text-lg flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#F9F7F7]"></span>
+                  Computer Score
+                </span>
+                <span className="text-2xl font-mono text-[#F9F7F7]">{computerScore}</span>
               </div>
             </div>
 
             <button
               onClick={() => setupGame(gameMode)}
-              className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors w-full"
+              className="w-full bg-[#3F72AF] hover:bg-[#3F72AF]/90 text-[#F9F7F7] font-semibold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-[#3F72AF]/25 transform hover:scale-[1.02]"
             >
               Play Again
             </button>
@@ -429,22 +449,22 @@ function App() {
       ) : (
         <>
           {/* Desktop and Portrait Layout */}
-          <div className="flex-1 flex md:flex-row flex-col gap-3 p-3 sm:gap-6 sm:p-6 landscape:md:flex landscape:hidden">
+          <div className="flex-1 flex md:flex-row flex-col gap-6 p-6 landscape:md:flex landscape:hidden">
             {/* Sidebar */}
-            <div className="md:w-72 md:space-y-4 flex md:flex-col md:block">
+            <div className="md:w-80 md:space-y-6 flex md:flex-col md:block">
               {/* Mobile Controls Bar */}
-              <div className="md:hidden flex flex-wrap gap-2 mb-2 w-full">
-                <div className="w-full flex gap-2">
+              <div className="md:hidden flex flex-wrap gap-3 mb-3 w-full">
+                <div className="w-full flex gap-3">
                   <button 
                     onClick={() => {
                       setShowInstructions(!showInstructions);
                       setShowModes(false);
                       setShowTime(false);
                     }}
-                    className={`flex-1 flex justify-center items-center gap-1 bg-blue-950/30 backdrop-blur-sm rounded-lg p-2 text-white ${showInstructions ? 'bg-blue-700/50 ring-2 ring-blue-400/50' : ''}`}
+                    className={`flex-1 flex justify-center items-center gap-2 bg-[#112D4E]/80 backdrop-blur-md rounded-xl p-3 text-[#F9F7F7] border ${showInstructions ? 'border-[#DBE2EF]/50 bg-[#3F72AF]/30' : 'border-[#DBE2EF]/30'} shadow-md transform hover:scale-[1.02] transition-all duration-300`}
                   >
-                    <HelpCircle size={16} />
-                    <span className="text-xs">Help</span>
+                    <HelpCircle size={18} className="text-[#F9F7F7]" />
+                    <span className="text-sm font-medium">Help</span>
                   </button>
                   <button 
                     onClick={() => {
@@ -452,210 +472,207 @@ function App() {
                       setShowInstructions(false);
                       setShowTime(false);
                     }}
-                    className={`flex-1 flex justify-center items-center gap-1 bg-blue-950/30 backdrop-blur-sm rounded-lg p-2 text-white ${showModes ? 'bg-blue-700/50 ring-2 ring-blue-400/50' : ''}`}
+                    className={`flex-1 flex justify-center items-center gap-2 bg-[#112D4E]/80 backdrop-blur-md rounded-xl p-3 text-[#F9F7F7] border ${showModes ? 'border-[#DBE2EF]/50 bg-[#3F72AF]/30' : 'border-[#DBE2EF]/30'} shadow-md transform hover:scale-[1.02] transition-all duration-300`}
                   >
-                    <Settings size={16} />
-                    <span className="text-xs">Mode</span>
+                    <Settings size={18} className="text-[#F9F7F7]" />
+                    <span className="text-sm font-medium">Mode</span>
                   </button>
-                  <div className="flex-1 flex justify-center items-center gap-1 bg-blue-950/30 backdrop-blur-sm rounded-lg p-2 text-white">
-                    <Trophy size={16} />
-                    <span className="text-xs font-semibold">{playerScore}-{computerScore}</span>
+                  <div className="flex-1 flex justify-center items-center gap-2 bg-[#112D4E]/80 backdrop-blur-md rounded-xl p-3 text-[#F9F7F7] border border-[#DBE2EF]/30 shadow-md">
+                    <Trophy size={18} className="text-[#F9F7F7]" />
+                    <span className="text-sm font-medium">{playerScore}-{computerScore}</span>
                   </div>
-                  <button 
-                    onClick={() => {
-                      setShowTime(!showTime);
-                      setShowInstructions(false);
-                      setShowModes(false);
-                    }}
-                    className={`flex-1 flex justify-center items-center gap-1 bg-blue-950/30 backdrop-blur-sm rounded-lg p-2 text-white ${showTime ? 'bg-blue-700/50 ring-2 ring-blue-400/50' : ''}`}
-                  >
-                    <Timer size={16} />
-                    <span className="text-xs">Time</span>
-                  </button>
                 </div>
                 
                 {/* Help Panel */}
-                <div className={`w-full bg-blue-950/80 backdrop-blur-md rounded-xl border border-blue-500/20 shadow-lg transition-all duration-300 overflow-hidden ${showInstructions ? 'max-h-60 opacity-100 p-4' : 'max-h-0 opacity-0 p-0 border-0'}`}>
-                  <div className="font-medium mb-3 text-sm flex items-center text-white">
-                    <HelpCircle size={16} className="text-blue-300 mr-2" />
+                <div className={`w-full bg-[#112D4E]/90 backdrop-blur-md rounded-xl border border-[#DBE2EF]/30 shadow-lg transition-all duration-300 overflow-hidden ${showInstructions ? 'max-h-60 opacity-100 p-4' : 'max-h-0 opacity-0 p-0 border-0'}`}>
+                  <div className="font-medium mb-3 text-sm flex items-center text-[#F9F7F7]">
+                    <HelpCircle size={18} className="text-[#F9F7F7] mr-2" />
                     How to Play
                   </div>
-                  <ul className="space-y-1.5 text-sm text-blue-100 pl-2">
-                    <li className="flex items-start">
-                      <span className="rounded-full bg-blue-600/30 w-4 h-4 flex items-center justify-center text-xs mr-2 mt-0.5">1</span>
+                  <ul className="space-y-2 text-sm text-[#F9F7F7] pl-2">
+                    <li className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
+                      <span className="rounded-full bg-[#3F72AF]/30 w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 shadow-sm">1</span>
                       <span>Click on two cards to reveal them</span>
                     </li>
-                    <li className="flex items-start">
-                      <span className="rounded-full bg-blue-600/30 w-4 h-4 flex items-center justify-center text-xs mr-2 mt-0.5">2</span>
+                    <li className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
+                      <span className="rounded-full bg-[#3F72AF]/30 w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 shadow-sm">2</span>
                       <span>Match identical food cards to score</span>
                     </li>
-                    <li className="flex items-start">
-                      <span className="rounded-full bg-blue-600/30 w-4 h-4 flex items-center justify-center text-xs mr-2 mt-0.5">3</span>
+                    <li className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
+                      <span className="rounded-full bg-[#3F72AF]/30 w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 shadow-sm">3</span>
                       <span>Take turns with the computer</span>
                     </li>
-                    <li className="flex items-start">
-                      <span className="rounded-full bg-blue-600/30 w-4 h-4 flex items-center justify-center text-xs mr-2 mt-0.5">4</span>
+                    <li className="flex items-start transform hover:translate-x-1 transition-transform duration-300">
+                      <span className="rounded-full bg-[#3F72AF]/30 w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5 shadow-sm">4</span>
                       <span>Most matches wins!</span>
                     </li>
                   </ul>
                 </div>
 
                 {/* Game Mode Panel */}
-                <div className={`w-full bg-blue-950/80 backdrop-blur-md rounded-xl border border-blue-500/20 shadow-lg transition-all duration-300 overflow-hidden ${showModes ? 'max-h-40 opacity-100 p-4' : 'max-h-0 opacity-0 p-0 border-0'}`}>
-                  <div className="font-medium mb-3 text-sm flex items-center text-white">
-                    <Settings size={16} className="text-blue-300 mr-2" />
+                <div className={`w-full bg-[#112D4E]/90 backdrop-blur-md rounded-xl border border-[#DBE2EF]/30 shadow-lg transition-all duration-300 overflow-hidden ${showModes ? 'max-h-40 opacity-100 p-4' : 'max-h-0 opacity-0 p-0 border-0'}`}>
+                  <div className="font-medium mb-3 text-sm flex items-center text-[#F9F7F7]">
+                    <Settings size={18} className="text-[#F9F7F7] mr-2" />
                     Game Mode
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <button
                       onClick={() => setGameMode('easy')}
-                      className={`flex-1 py-2 rounded-lg text-xs ${gameMode === 'easy' ? 'bg-blue-600 text-white font-semibold' : 'bg-blue-800/20 text-blue-100'}`}
+                      className={`flex-1 py-2.5 rounded-lg text-sm font-medium ${gameMode === 'easy' ? 'bg-[#3F72AF] text-[#F9F7F7]' : 'bg-[#3F72AF]/30 text-[#F9F7F7] border border-[#DBE2EF]/30'} shadow-md transform hover:scale-[1.02] transition-all duration-300`}
                     >
                       Easy
                     </button>
                     <button
                       onClick={() => setGameMode('medium')}
-                      className={`flex-1 py-2 rounded-lg text-xs ${gameMode === 'medium' ? 'bg-blue-600 text-white font-semibold' : 'bg-blue-800/20 text-blue-100'}`}
+                      className={`flex-1 py-2.5 rounded-lg text-sm font-medium ${gameMode === 'medium' ? 'bg-[#3F72AF] text-[#F9F7F7]' : 'bg-[#3F72AF]/30 text-[#F9F7F7] border border-[#DBE2EF]/30'} shadow-md transform hover:scale-[1.02] transition-all duration-300`}
                     >
                       Medium
                     </button>
                     <button
                       onClick={() => setGameMode('hard')}
-                      className={`flex-1 py-2 rounded-lg text-xs ${gameMode === 'hard' ? 'bg-blue-600 text-white font-semibold' : 'bg-blue-800/20 text-blue-100'}`}
+                      className={`flex-1 py-2.5 rounded-lg text-sm font-medium ${gameMode === 'hard' ? 'bg-[#3F72AF] text-[#F9F7F7]' : 'bg-[#3F72AF]/30 text-[#F9F7F7] border border-[#DBE2EF]/30'} shadow-md transform hover:scale-[1.02] transition-all duration-300`}
                     >
                       Hard
                     </button>
                   </div>
                 </div>
-
-                {/* Time Panel */}
-                <div className={`w-full bg-blue-950/80 backdrop-blur-md rounded-xl border border-blue-500/20 shadow-lg transition-all duration-300 overflow-hidden ${showTime ? 'max-h-28 opacity-100 p-4' : 'max-h-0 opacity-0 p-0 border-0'}`}>
-                  <div className="font-medium mb-2 text-sm flex items-center text-white">
-                    <Timer size={16} className="text-blue-300 mr-2" />
-                    Game Time
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-mono text-blue-200 bg-blue-800/20 py-2 rounded-lg">
-                      {formatTime(time)}
-                    </div>
-                  </div>
-                </div>
               </div>
               
               {/* Desktop Sidebar - visible on md+ screens */}
-              <div className="hidden md:block space-y-4 flex-1">
-            {/* How to Play */}
-            <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
-              <button
-                className="w-full flex items-center justify-between"
-                onClick={() => setShowInstructions(!showInstructions)}
-              >
-                <div className="flex items-center gap-2">
-                  <HelpCircle size={20} className="text-blue-300" />
-                  <span className="font-medium">How to Play</span>
-                </div>
-                <ChevronDown
-                  className={`transform transition-transform ${showInstructions ? 'rotate-180' : ''}`}
-                />
-              </button>
-              {showInstructions && (
-                <ul className="mt-4 space-y-2 text-sm text-blue-100">
-                  <li>• Click on two cards to reveal them</li>
-                  <li>• Match identical food cards to score</li>
-                  <li>• Take turns with the computer</li>
-                  <li>• Most matches wins!</li>
-                </ul>
-              )}
-            </div>
-
-            {/* Game Mode */}
-            <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
-              <button
-                className="w-full flex items-center justify-between"
-                onClick={() => setShowModes(!showModes)}
-              >
-                <div className="flex items-center gap-2">
-                  <Settings size={20} className="text-blue-300" />
-                  <span className="font-medium">Game Mode</span>
-                </div>
-                <ChevronDown className={`transform transition-transform ${showModes ? 'rotate-180' : ''}`} />
-              </button>
-              {showModes && (
-                <div className="mt-4">
-                  <select
-                    value={gameMode}
-                    onChange={e => setGameMode(e.target.value)}
-                    className="w-full bg-blue-800/20 border border-blue-600/20 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              <div className="hidden md:block space-y-6 flex-1">
+                {/* How to Play */}
+                <div className="bg-[#112D4E]/90 backdrop-blur-md rounded-xl p-5 text-[#F9F7F7] border border-[#DBE2EF]/30 shadow-lg transform hover:scale-[1.02] transition-all duration-300">
+                  <button
+                    className="w-full flex items-center justify-between"
+                    onClick={() => setShowInstructions(!showInstructions)}
                   >
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                  </select>
+                    <div className="flex items-center gap-3">
+                      <HelpCircle size={20} className="text-[#F9F7F7]" />
+                      <span className="font-medium">How to Play</span>
+                    </div>
+                    <ChevronDown
+                      className={`transform transition-transform duration-300 ${showInstructions ? 'rotate-180' : ''}`}
+                    />
+                  </button>
                 </div>
-              )}
-            </div>
 
-            {/* Timer */}
-            <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white">
-              <button
-                className="w-full flex items-center justify-between"
-                onClick={() => setShowTime(!showTime)}
-              >
-                <div className="flex items-center gap-2">
-                  <Timer size={20} className="text-blue-300" />
-                  <span className="font-medium">Time</span>
-                </div>
-                <ChevronDown className={`transform transition-transform ${showTime ? 'rotate-180' : ''}`} />
-              </button>
-              {showTime && (
-                <div className="mt-4 text-center text-2xl font-mono text-blue-300">
-                  {formatTime(time)}
-                </div>
-              )}
-            </div>
+                {/* How to Play Modal */}
+                {showInstructions && (
+                  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div className="bg-[#112D4E] rounded-2xl p-6 max-w-md w-full mx-4 border border-[#DBE2EF]/30 shadow-2xl transform transition-all duration-300">
+                      <div className="flex justify-between items-center mb-6">
+                        <div className="flex items-center gap-3">
+                          <HelpCircle size={24} className="text-[#F9F7F7]" />
+                          <h3 className="text-xl font-bold text-[#F9F7F7]">How to Play</h3>
+                        </div>
+                        <button 
+                          onClick={() => setShowInstructions(false)}
+                          className="p-2 hover:bg-[#3F72AF]/30 rounded-lg transition-colors"
+                        >
+                          <svg className="w-5 h-5 text-[#F9F7F7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                      <div className="space-y-4">
+                        <div className="bg-[#3F72AF]/20 rounded-xl p-4 border border-[#DBE2EF]/30">
+                          <div className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-[#3F72AF] flex items-center justify-center text-sm font-bold text-[#F9F7F7] flex-shrink-0">1</span>
+                            <p className="text-[#F9F7F7]">Click on two cards to reveal them</p>
+                          </div>
+                        </div>
+                        <div className="bg-[#3F72AF]/20 rounded-xl p-4 border border-[#DBE2EF]/30">
+                          <div className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-[#3F72AF] flex items-center justify-center text-sm font-bold text-[#F9F7F7] flex-shrink-0">2</span>
+                            <p className="text-[#F9F7F7]">Match identical food cards to score</p>
+                          </div>
+                        </div>
+                        <div className="bg-[#3F72AF]/20 rounded-xl p-4 border border-[#DBE2EF]/30">
+                          <div className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-[#3F72AF] flex items-center justify-center text-sm font-bold text-[#F9F7F7] flex-shrink-0">3</span>
+                            <p className="text-[#F9F7F7]">Take turns with the computer</p>
+                          </div>
+                        </div>
+                        <div className="bg-[#3F72AF]/20 rounded-xl p-4 border border-[#DBE2EF]/30">
+                          <div className="flex items-start gap-3">
+                            <span className="w-6 h-6 rounded-full bg-[#3F72AF] flex items-center justify-center text-sm font-bold text-[#F9F7F7] flex-shrink-0">4</span>
+                            <p className="text-[#F9F7F7]">Most matches wins!</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-            {/* Scoreboard */}
-            <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl p-4 text-white flex-1">
-              <div className="flex items-center gap-2 mb-4">
-                <Trophy size={20} className="text-blue-300" />
-                <span className="font-medium">Scoreboard</span>
-              </div>
-              <div className="space-y-3">
-                    <div className={`flex justify-between items-center ${isPlayerTurn ? 'bg-green-700/40 border-l-4 border-green-500' : 'bg-blue-800/20'} p-3 rounded-lg transition-all duration-300`}>
+                {/* Game Mode */}
+                <div className="bg-[#112D4E]/90 backdrop-blur-md rounded-xl p-5 text-[#F9F7F7] border border-[#DBE2EF]/30 shadow-lg transform hover:scale-[1.02] transition-all duration-300">
+                  <button
+                    className="w-full flex items-center justify-between"
+                    onClick={() => setShowModes(!showModes)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Settings size={20} className="text-[#F9F7F7]" />
+                      <span className="font-medium">Game Mode</span>
+                    </div>
+                    <ChevronDown className={`transform transition-transform duration-300 ${showModes ? 'rotate-180' : ''}`} />
+                  </button>
+                  {showModes && (
+                    <div className="mt-4">
+                      <select
+                        value={gameMode}
+                        onChange={e => setGameMode(e.target.value)}
+                        className="w-full bg-[#3F72AF]/30 border border-[#DBE2EF]/30 rounded-lg p-2.5 text-[#F9F7F7] focus:outline-none focus:ring-2 focus:ring-[#DBE2EF] shadow-md transform hover:scale-[1.02] transition-all duration-300"
+                      >
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+
+                {/* Scoreboard */}
+                <div className="bg-[#112D4E]/90 backdrop-blur-md rounded-xl p-5 text-[#F9F7F7] border border-[#DBE2EF]/30 shadow-lg flex-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Trophy size={20} className="text-[#F9F7F7]" />
+                    <span className="font-medium">Scoreboard</span>
+                  </div>
+                  <div className="space-y-3">
+                    <div className={`flex justify-between items-center ${isPlayerTurn ? 'bg-[#3F72AF]/30 border-l-4 border-[#F9F7F7]' : 'bg-[#3F72AF]/20'} p-4 rounded-lg transition-all duration-300 shadow-md transform hover:scale-[1.02]`}>
                       <span className="flex items-center gap-2">
-                        {isPlayerTurn && <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>}
+                        {isPlayerTurn && <div className="w-2 h-2 bg-[#F9F7F7] rounded-full animate-pulse shadow-sm"></div>}
                         Player
                       </span>
-                  <span className="font-mono text-blue-300 text-lg">{playerScore}</span>
-                </div>
-                    <div className={`flex justify-between items-center ${!isPlayerTurn ? 'bg-orange-700/40 border-l-4 border-orange-500' : 'bg-blue-800/20'} p-3 rounded-lg transition-all duration-300`}>
+                      <span className="font-mono text-[#F9F7F7] text-lg">{playerScore}</span>
+                    </div>
+                    <div className={`flex justify-between items-center ${!isPlayerTurn ? 'bg-[#3F72AF]/30 border-l-4 border-[#F9F7F7]' : 'bg-[#3F72AF]/20'} p-4 rounded-lg transition-all duration-300 shadow-md transform hover:scale-[1.02]`}>
                       <span className="flex items-center gap-2">
-                        {!isPlayerTurn && <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>}
+                        {!isPlayerTurn && <div className="w-2 h-2 bg-[#F9F7F7] rounded-full animate-pulse shadow-sm"></div>}
                         Computer
                       </span>
-                  <span className="font-mono text-blue-300 text-lg">{computerScore}</span>
+                      <span className="font-mono text-[#F9F7F7] text-lg">{computerScore}</span>
                     </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
             {/* Game Grid - Desktop & Portrait */}
-          <div className="flex-1 flex items-center justify-center">
-            <div
-                className={`grid gap-2 sm:gap-4 ${
-                gameMode === 'easy'
+            <div className="flex-1 flex items-center justify-center">
+              <div
+                className={`grid gap-3 sm:gap-4 ${
+                  gameMode === 'easy'
                     ? 'grid-cols-4 w-full max-w-[600px]'
-                  : gameMode === 'medium'
+                    : gameMode === 'medium'
                     ? 'grid-cols-4 sm:grid-cols-5 w-full max-w-[750px]'
                     : 'grid-cols-4 sm:grid-cols-6 w-full max-w-[900px]'
-              }`}
-            >
-              {cards.map((card, idx) => (
-                <div
-                  key={card.id}
-                  onClick={() => handleCardClick(idx)}
-                    className={`w-full aspect-square relative cursor-pointer hover:scale-105 ${isPlayerTurn ? 'hover:shadow-green-500/30 hover:shadow-lg' : ''}`}
+                }`}
+              >
+                {cards.map((card, idx) => (
+                  <div
+                    key={card.id}
+                    onClick={() => handleCardClick(idx)}
+                    className={`w-full aspect-square relative cursor-pointer hover:scale-105 transition-all duration-300 ${isPlayerTurn ? 'hover:shadow-[#3F72AF]/30 hover:shadow-lg' : ''}`}
                   >
                     {/* Card container with flip effect */}
                     <div 
@@ -667,13 +684,13 @@ function App() {
                     >
                       {/* Front face */}
                       <div
-                        className="absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-lg"
+                        className="absolute w-full h-full rounded-xl bg-[#3F72AF] shadow-lg border border-[#DBE2EF]/30"
                         style={{ backfaceVisibility: 'hidden' }}
                       />
                       
                       {/* Back face */}
                       <div
-                        className="absolute w-full h-full rounded-xl bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-lg"
+                        className="absolute w-full h-full rounded-xl bg-[#3F72AF] shadow-lg border border-[#DBE2EF]/30"
                         style={{ 
                           backfaceVisibility: 'hidden',
                           transform: 'rotateY(180deg)'
@@ -688,71 +705,83 @@ function App() {
             </div>
           </div>
 
-          {/* Mobile Landscape Layout - Only visible in landscape on small devices */}
+          {/* Mobile Landscape Layout */}
           <div className="hidden landscape:flex landscape:md:hidden flex-row h-screen">
             {/* Side Controls */}
-            <div className="w-36 h-full flex-shrink-0 border-r border-blue-600/20 bg-blue-950/40 flex flex-col justify-between py-2">
+            <div className="w-40 h-full flex-shrink-0 border-r border-[#DBE2EF]/30 bg-[#112D4E]/90 backdrop-blur-md flex flex-col justify-between py-4 shadow-lg">
               {/* Top area with logo and turn info */}
-              <div className="px-2">
-                <h1 className="text-md font-bold text-white text-center mb-2">Culinary Flip</h1>
-                <div className={`mb-2 text-white ${isPlayerTurn ? 'bg-green-600' : 'bg-orange-500'} px-2 py-1 rounded-lg text-xs font-bold text-center`}>
+              <div className="px-3">
+                <h1 className="text-lg font-bold text-[#F9F7F7] text-center mb-3 drop-shadow-lg">Culinary Flip</h1>
+                <div className={`mb-3 text-[#F9F7F7] ${isPlayerTurn ? 'bg-[#3F72AF]' : 'bg-[#112D4E]'} px-3 py-2 rounded-lg text-sm font-bold text-center shadow-md`}>
                   {isPlayerTurn ? '👤 Your Turn' : '💻 Computer'}
                 </div>
                 
                 {/* Scores */}
-                <div className="bg-blue-800/30 rounded-lg p-2 mb-2">
-                  <div className="flex justify-between text-xs text-white">
-                    <span>Player:</span>
-                    <span className="font-bold">{playerScore}</span>
+                <div className="bg-[#3F72AF]/30 rounded-lg p-3 mb-3 border border-[#DBE2EF]/30 shadow-md">
+                  <div className="flex justify-between text-sm text-[#F9F7F7] mb-2">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F9F7F7] shadow-sm"></span>
+                      Player:
+                    </span>
+                    <span className="font-bold text-[#F9F7F7]">{playerScore}</span>
                   </div>
-                  <div className="flex justify-between text-xs text-white">
-                    <span>Computer:</span>
-                    <span className="font-bold">{computerScore}</span>
+                  <div className="flex justify-between text-sm text-[#F9F7F7]">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F9F7F7] shadow-sm"></span>
+                      Computer:
+                    </span>
+                    <span className="font-bold text-[#F9F7F7]">{computerScore}</span>
                   </div>
-                </div>
-
-                {/* Time */}
-                <div className="bg-blue-800/30 rounded-lg p-2 mb-2 text-center">
-                  <div className="text-xs text-white mb-1">Time</div>
-                  <div className="text-sm font-mono text-white">{formatTime(time)}</div>
                 </div>
               </div>
               
               {/* Bottom area with controls */}
-              <div className="px-2">
+              <div className="px-3">
                 <select
                   value={gameMode}
                   onChange={e => setGameMode(e.target.value)}
-                  className="w-full bg-blue-800/30 border border-blue-600/20 rounded-lg p-1 text-white text-xs mb-2"
+                  className="w-full bg-[#3F72AF]/30 border border-[#DBE2EF]/30 rounded-lg p-2 text-[#F9F7F7] text-sm mb-3 shadow-md transform hover:scale-[1.02] transition-all duration-300"
                 >
                   <option value="easy">Easy</option>
                   <option value="medium">Medium</option>
                   <option value="hard">Hard</option>
                 </select>
                 
-                <button onClick={toggleMute} className="w-full bg-blue-800/30 rounded-lg p-2 text-white flex justify-center mb-2">
-                  {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                <button onClick={toggleMute} className="w-full bg-[#3F72AF]/30 border border-[#DBE2EF]/30 rounded-lg p-2 text-[#F9F7F7] flex justify-center mb-3 shadow-md transform hover:scale-[1.02] transition-all duration-300">
+                  {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
                 </button>
                 
                 <button
                   onClick={() => setShowInstructions(!showInstructions)}
-                  className="w-full bg-blue-800/30 rounded-lg p-2 text-white text-xs flex items-center justify-center"
+                  className="w-full bg-[#3F72AF]/30 border border-[#DBE2EF]/30 rounded-lg p-2 text-[#F9F7F7] text-sm flex items-center justify-center shadow-md transform hover:scale-[1.02] transition-all duration-300"
                 >
-                  <HelpCircle size={14} className="mr-1" /> Help
+                  <HelpCircle size={16} className="mr-1.5" /> Help
                 </button>
                 
-                {/* Help Modal - Only shown when triggered */}
+                {/* Help Modal */}
                 {showInstructions && (
-                  <div className="absolute bottom-2 left-2 right-2 bg-blue-950/90 backdrop-blur-sm rounded-lg p-3 text-white text-xs z-10">
-                    <div className="flex justify-between items-center mb-2">
+                  <div className="absolute bottom-4 left-4 right-4 bg-[#112D4E]/90 backdrop-blur-md rounded-lg p-4 text-[#F9F7F7] text-sm z-10 border border-[#DBE2EF]/30 shadow-xl">
+                    <div className="flex justify-between items-center mb-3">
                       <span className="font-bold">How to Play</span>
                       <button onClick={() => setShowInstructions(false)}>✕</button>
                     </div>
-                    <ul className="space-y-1">
-                      <li>• Click on two cards to reveal them</li>
-                      <li>• Match identical food cards to score</li>
-                      <li>• Take turns with the computer</li>
-                      <li>• Most matches wins!</li>
+                    <ul className="space-y-2">
+                      <li className="flex items-center gap-2 transform hover:translate-x-1 transition-transform duration-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F9F7F7] shadow-sm"></span>
+                        Click on two cards to reveal them
+                      </li>
+                      <li className="flex items-center gap-2 transform hover:translate-x-1 transition-transform duration-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F9F7F7] shadow-sm"></span>
+                        Match identical food cards to score
+                      </li>
+                      <li className="flex items-center gap-2 transform hover:translate-x-1 transition-transform duration-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F9F7F7] shadow-sm"></span>
+                        Take turns with the computer
+                      </li>
+                      <li className="flex items-center gap-2 transform hover:translate-x-1 transition-transform duration-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F9F7F7] shadow-sm"></span>
+                        Most matches wins!
+                      </li>
                     </ul>
                   </div>
                 )}
@@ -760,14 +789,14 @@ function App() {
             </div>
 
             {/* Game Grid - Landscape Optimized */}
-            <div className="flex-1 flex items-center justify-center p-1 overflow-hidden">
+            <div className="flex-1 flex items-center justify-center p-2 overflow-hidden">
               <div
                 className={`grid max-h-full max-w-full ${
                   gameMode === 'easy'
-                    ? 'grid-cols-4 gap-1'
+                    ? 'grid-cols-4 gap-2'
                     : gameMode === 'medium'
-                    ? 'grid-cols-5 gap-1'
-                    : 'grid-cols-6 gap-1'
+                    ? 'grid-cols-5 gap-2'
+                    : 'grid-cols-6 gap-2'
                 }`}
                 style={{
                   width: '100%',
@@ -778,7 +807,7 @@ function App() {
                   <div
                     key={card.id}
                     onClick={() => handleCardClick(idx)}
-                    className="aspect-square relative cursor-pointer"
+                    className="aspect-square relative cursor-pointer transform hover:scale-105 transition-all duration-300"
                   >
                     {/* Card container with flip effect */}
                     <div 
@@ -790,26 +819,26 @@ function App() {
                     >
                       {/* Front face */}
                       <div
-                        className="absolute w-full h-full rounded-sm bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-sm"
+                        className="absolute w-full h-full rounded-lg bg-[#3F72AF] shadow-md border border-[#DBE2EF]/30"
                         style={{ backfaceVisibility: 'hidden' }}
                       />
                       
                       {/* Back face */}
                       <div
-                        className="absolute w-full h-full rounded-sm bg-gradient-to-br from-blue-500 via-indigo-600 to-blue-700 shadow-sm"
+                        className="absolute w-full h-full rounded-lg bg-[#3F72AF] shadow-md border border-[#DBE2EF]/30"
                         style={{ 
                           backfaceVisibility: 'hidden',
                           transform: 'rotateY(180deg)'
                         }}
                       >
-                        <div className="w-full h-full bg-cover bg-center rounded-sm" style={{ backgroundImage: `url(${card.img})` }} />
+                        <div className="w-full h-full bg-cover bg-center rounded-lg" style={{ backgroundImage: `url(${card.img})` }} />
                       </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
         </>
       )}
       
